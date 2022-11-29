@@ -72,33 +72,40 @@ def main(args):
     devset = cogmen.Dataset(data["dev"], args)
     testset = cogmen.Dataset(data["test"], args)
 
+    # subsect:
+    trainset25 = cogmen.Dataset(data["train"][:27], args)
+    trainset50 = cogmen.Dataset(data["train"][:54], args)
+    trainset75 = cogmen.Dataset(data["train"][:81], args)
+
     log.debug("Building model...")
     if args.log_in_comet and not args.tuning:
         model_file = "./model_checkpoints/" + str(args.experiment.get_key()) + ".pt"
     else:
         model_file = "./model_checkpoints/model.pt"
-    model = cogmen.COGMEN(args).to(args.device)
-    opt = cogmen.Optim(args.learning_rate, args.max_grad_value, args.weight_decay)
-    opt.set_parameters(model.parameters(), args.optimizer)
-    sched = opt.get_scheduler(args.scheduler)
 
-    coach = cogmen.Coach(trainset, devset, testset, model, opt, sched, args)
-    if not args.from_begin:
-        ckpt = torch.load(model_file)
-        coach.load_ckpt(ckpt)
-        print("Training from checkpoint...")
+    for trainset_subset in [trainset25, trainset50, trainset75, trainset]:
+        model = cogmen.COGMEN(args).to(args.device)
+        opt = cogmen.Optim(args.learning_rate, args.max_grad_value, args.weight_decay)
+        opt.set_parameters(model.parameters(), args.optimizer)
+        sched = opt.get_scheduler(args.scheduler)
 
-    # Train
-    log.info("Start training...")
-    ret = coach.train()
+        coach = cogmen.Coach(trainset_subset, devset, testset, model, opt, sched, args)
+        if not args.from_begin:
+            ckpt = torch.load(model_file)
+            coach.load_ckpt(ckpt)
+            print("Training from checkpoint...")
 
-    # Save.
-    checkpoint = {
-        "best_dev_f1": ret[0],
-        "best_epoch": ret[1],
-        "best_state": ret[2],
-    }
-    torch.save(checkpoint, model_file)
+        # Train
+        log.info("Start training...")
+        ret = coach.train()
+
+        # Save.
+        checkpoint = {
+            "best_dev_f1": ret[0],
+            "best_epoch": ret[1],
+            "best_state": ret[2],
+        }
+        torch.save(checkpoint, model_file)
 
 
 if __name__ == "__main__":
