@@ -105,7 +105,7 @@ class Coach:
                         + self.args.dataset
                         + "_best_dev_f1_model_"
                         + self.args.modalities
-                        + str(len(self.trainset))
+                        + str(len(self.trainset.samples))
                         + ".pt",
                     )
 
