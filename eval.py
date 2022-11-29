@@ -21,7 +21,7 @@ def load_pkl(file):
         return pickle.load(f)
 
 
-def main(args):
+def main(args, trainsize):
     data = load_pkl(f"data/{args.dataset}/data_{args.dataset}.pkl")
 
     model_dict = torch.load(
@@ -29,6 +29,7 @@ def main(args):
         + str(args.dataset)
         + "_best_dev_f1_model_"
         + str(args.modalities)
+        + str(trainsize)
         + ".pt",
     )
     stored_args = model_dict["args"]
@@ -120,4 +121,5 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    main(args)
+    for trainsize in [27, 54, 81, 108]:
+        main(args, trainsize)
