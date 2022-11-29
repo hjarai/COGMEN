@@ -1,5 +1,5 @@
 import torch.nn as nn
-from torch_geometric.nn import RGCNConv, TransformerConv, RGATConv
+from torch_geometric.nn import  RGATConv
 
 
 class GNN(nn.Module):
