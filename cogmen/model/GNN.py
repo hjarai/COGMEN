@@ -11,7 +11,7 @@ class GNN(nn.Module):
         self.bn = nn.BatchNorm1d(h2_dim * args.gnn_nheads)
 
     def forward(self, node_features, edge_index, edge_type):
-        x = self.conv1(node_features, edge_index, edge_type)
+        x = self.conv1(node_features, edge_index, edge_type).relu()
         x = nn.functional.leaky_relu(self.bn(self.conv2(x, edge_index, edge_type)))
 
         return x
