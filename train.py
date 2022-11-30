@@ -73,9 +73,8 @@ def main(args):
     testset = cogmen.Dataset(data["test"], args)
 
     # subsect:
-    trainset25 = cogmen.Dataset(data["train"][:27], args)
-    trainset50 = cogmen.Dataset(data["train"][:54], args)
-    trainset75 = cogmen.Dataset(data["train"][:81], args)
+    cuts = [12*(i+1) for i in  list(range(9))] 
+    trainset_list = [cogmen.Dataset(data["train"][:num], args) for num in cuts]
 
     log.debug("Building model...")
     if args.log_in_comet and not args.tuning:
@@ -83,7 +82,7 @@ def main(args):
     else:
         model_file = "./model_checkpoints/model.pt"
 
-    for trainset_subset in [trainset25, trainset50, trainset75, trainset]:
+    for trainset_subset in trainset_list:
         model = cogmen.COGMEN(args).to(args.device)
         opt = cogmen.Optim(args.learning_rate, args.max_grad_value, args.weight_decay)
         opt.set_parameters(model.parameters(), args.optimizer)

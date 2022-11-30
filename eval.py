@@ -121,5 +121,6 @@ if __name__ == "__main__":
     )
 
     args = parser.parse_args()
-    for trainsize in [27, 54, 81, 108]:
+    cuts = [12*(i+1) for i in  list(range(9))] 
+    for trainsize in cuts:
         main(args, trainsize)
