@@ -80,7 +80,7 @@ def main(args):
 
 
 if __name__ == "__main__":
-
+    print("WHYYYYY")
     parser = argparse.ArgumentParser(description="eval.py")
     parser.add_argument(
         "--dataset",
