@@ -81,39 +81,4 @@ def main(args):
 
 if __name__ == "__main__":
     print("WHYYYYY")
-    parser = argparse.ArgumentParser(description="eval.py")
-    parser.add_argument(
-        "--dataset",
-        type=str,
-        required=True,
-        default="iemocap_4",
-        choices=["iemocap", "iemocap_4", "mosei"],
-        help="Dataset name.",
-    )
-
-    parser.add_argument(
-        "--data_dir_path", type=str, help="Dataset directory path", default="./data"
-    )
-
-    parser.add_argument("--device", type=str, default="cpu", help="Computing device.")
-
-    # Modalities
-    """ Modalities effects:
-        -> dimentions of input vectors in dataset.py
-        -> number of heads in transformer_conv in seqcontext.py"""
-    parser.add_argument(
-        "--modalities",
-        type=str,
-        default="atv",
-        # required=True,
-        choices=["a", "t", "v", "at", "tv", "av", "atv"],
-        help="Modalities",
-    )
-
-    # emotion
-    parser.add_argument(
-        "--emotion", type=str, default=None, help="emotion class for mosei"
-    )
-
-    args = parser.parse_args()
-    main(args)
+    print("plz")
