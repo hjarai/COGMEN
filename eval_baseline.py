@@ -73,7 +73,7 @@ def main(args):
                     "disgust": disgust,
                     "fear": fear,
                 }
-
+            print("WHY")
             print(f"F1 Score: {f1}")
 
 
