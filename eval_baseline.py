@@ -23,8 +23,10 @@ def load_pkl(file):
 
 def main(args):
     data = load_pkl(f"data/{args.dataset}/data_{args.dataset}.pkl")
+    print('loaded')
 
     model_dict = torch.load("model_checkpoints/iemocap_4_best_dev_f1_model_atv.pt")
+    
     stored_args = model_dict["args"]
     model = model_dict["state_dict"]
     testset = cogmen.Dataset(data["test"], stored_args)
@@ -51,7 +53,7 @@ def main(args):
             golds = torch.cat(golds, dim=-1).numpy()
             preds = torch.cat(preds, dim=-1).numpy()
             f1 = metrics.f1_score(golds, preds, average="weighted")
-
+        print(test)
         if test:
             print(metrics.classification_report(golds, preds, digits=4))
 
